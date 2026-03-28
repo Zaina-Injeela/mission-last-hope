@@ -1,3 +1,5 @@
+MISSION: YOU ARE THE LAST HOPE 
+
 MISSION: YOU ARE THE LAST HOPE is an interactive storytelling web experience designed around the theme of an astronaut’s journey from a collapsing Earth to the establishment of life on Mars. The project focuses on transforming a traditional website into an immersive, narrative-driven experience where the user actively progresses through the story.
 
 The experience is structured into five sections, each representing a phase of the mission: Earth Collapse, Launch Sequence, Deep Space Travel, Mars Entry, and Colony Establishment. Scroll-based interactions are used as the primary storytelling mechanism, allowing users to navigate the journey through animations, transitions, and visual progression.
