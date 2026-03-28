@@ -1,0 +1,458 @@
+/* ═══════════════════════════════════════════════════════════════
+   POLISH.CSS — AWWWARDS LAYER
+   Loads last. Fixes: cursor glow global · text layout · 
+   anti-flicker · typographic rhythm · Awwwards-level refinement.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ──────────────────────────────────────
+   GLOBAL CURSOR GLOW — works on ALL pages/sections
+   Overrides script.js lag with composited-only properties.
+   The JS rAF loop sets left/top; we only touch visual props.
+────────────────────────────────────── */
+#cursor-dot {
+  width: 7px;
+  height: 7px;
+  background: rgba(0, 185, 255, 0.95);
+  box-shadow:
+    0 0 10px rgba(0, 185, 255, 0.9),
+    0 0 22px rgba(0, 185, 255, 0.5),
+    0 0 44px rgba(0, 185, 255, 0.2);
+  transition:
+    width 0.2s ease,
+    height 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.25s ease,
+    transform 0.12s ease;
+  z-index: 10000;
+  mix-blend-mode: screen;
+}
+
+#cursor-ring {
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid rgba(0, 185, 255, 0.55);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: screen;
+  /* NO margin-left/top — JS positions via left/top + translate(-50%,-50%) */
+  transition:
+    width 0.30s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.30s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.25s ease,
+    border-width 0.25s ease,
+    box-shadow 0.30s ease,
+    opacity 0.2s ease;
+}
+
+/* HOVER STATE — expands ring, no positional margin tricks */
+body.cursor-hover #cursor-dot {
+  width: 10px !important;
+  height: 10px !important;
+  background: rgba(255, 200, 40, 0.95) !important;
+  box-shadow:
+    0 0 12px rgba(255, 200, 40, 0.9),
+    0 0 28px rgba(255, 200, 40, 0.5),
+    0 0 55px rgba(255, 200, 40, 0.2) !important;
+  transform: translate(-50%, -50%) scale(1) !important;
+}
+body.cursor-hover #cursor-ring {
+  width: 50px !important;
+  height: 50px !important;
+  border-color: rgba(255, 200, 40, 0.6) !important;
+  border-width: 1.5px !important;
+  box-shadow: 0 0 18px rgba(255, 200, 40, 0.25) !important;
+}
+
+/* CLICK STATE */
+body.cursor-click #cursor-dot {
+  transform: translate(-50%, -50%) scale(3) !important;
+  background: rgba(0, 255, 200, 0.95) !important;
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.9), 0 0 40px rgba(0, 255, 200, 0.4) !important;
+}
+body.cursor-click #cursor-ring {
+  width: 38px !important;
+  height: 38px !important;
+  border-color: rgba(0, 255, 200, 0.7) !important;
+}
+
+/* ──────────────────────────────────────
+   ANTI-FLICKER: Promote compositing layers properly.
+   These elements had will-change misuse causing GPU flicker.
+────────────────────────────────────── */
+#film-grain {
+  /* Slower animation = far less GPU thrash */
+  animation-duration: 0.22s !important;
+  opacity: 0.02 !important;
+}
+
+/* Remove the body-level filter that was causing whole-page repaints on nav */
+body {
+  filter: none !important;
+  will-change: auto;
+}
+
+/* ──────────────────────────────────────
+   TEXT TOO HIGH — SECTION CONTENT VERTICAL RHYTHM
+   All sections need breathing room from HUD top bar (≈58px)
+   and letterbox bar (22px) = ~80px safe zone.
+────────────────────────────────────── */
+.section {
+  align-items: center;
+  /* Ensure content never clips under the HUD */
+  padding-top: 58px;
+}
+
+/* Earth section — the ticker + HUD pushes content too high */
+#earth {
+  padding-top: 0; /* earth-content handles its own padding now */
+}
+
+.earth-content {
+  /* Already set in style.css, reinforce here */
+  padding-top: clamp(80px, 11vh, 120px) !important;
+  padding-bottom: clamp(60px, 8vh, 100px) !important;
+}
+
+/* Glitch title — more commanding presence */
+.glitch {
+  font-size: clamp(28px, 5vw, 68px) !important;
+  letter-spacing: clamp(2px, 0.4vw, 6px) !important;
+  text-shadow:
+    0 0 40px rgba(0, 160, 255, 0.35),
+    0 0 80px rgba(0, 160, 255, 0.12) !important;
+  margin-bottom: 6px;
+}
+
+.glitch-wrap {
+  margin-bottom: 28px !important;
+}
+
+/* Typewriter line — cleaner breathing room */
+.typewriter-line {
+  margin-bottom: 44px !important;
+  font-size: clamp(10px, 1.2vw, 14px) !important;
+  letter-spacing: clamp(1px, 0.3vw, 3px) !important;
+  opacity: 0.85;
+}
+
+/* Crisis grid — tighter, more intentional */
+.crisis-grid {
+  margin-bottom: 40px !important;
+  gap: 12px !important;
+}
+
+.crisis-card {
+  padding: 16px 22px !important;
+  min-width: 200px !important;
+  max-width: 280px !important;
+}
+
+/* Briefing card — more editorial weight */
+.briefing-card {
+  margin-bottom: 40px !important;
+  border-left-width: 2px !important;
+  padding: 22px 28px !important;
+  font-size: 14.5px !important;
+  line-height: 1.85 !important;
+  background: rgba(0, 8, 24, 0.72) !important;
+}
+
+/* Prime button — more presence */
+.prime-btn {
+  margin-top: 4px;
+  padding: 16px 44px !important;
+  font-size: 11px !important;
+  letter-spacing: 4px !important;
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: SECTION HEADINGS — refined hierarchy
+────────────────────────────────────── */
+.section-heading {
+  font-size: clamp(28px, 4.4vw, 60px) !important;
+  line-height: 1.0 !important;
+  letter-spacing: clamp(1px, 0.3vw, 3px) !important;
+  margin-bottom: 28px !important;
+}
+
+.phase-tag {
+  font-size: 9px !important;
+  letter-spacing: 5px !important;
+  margin-bottom: 18px !important;
+  padding: 5px 14px !important;
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: SOUND HINT — refined dock
+────────────────────────────────────── */
+#sound-hint {
+  padding: 10px 18px !important;
+  gap: 14px !important;
+  border-radius: 3px !important;
+  font-size: 10px !important;
+  letter-spacing: 2.5px !important;
+  /* Pin to bottom, never let it overlap content */
+  bottom: 28px !important;
+  backdrop-filter: blur(12px) !important;
+  background: rgba(0, 4, 16, 0.88) !important;
+  border-color: rgba(0, 170, 255, 0.18) !important;
+  box-shadow: 0 0 24px rgba(0, 170, 255, 0.06), 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: HUD TOP BAR — refined
+────────────────────────────────────── */
+.hud-top {
+  padding: 12px 24px !important;
+  backdrop-filter: blur(16px);
+  background: linear-gradient(180deg, rgba(0, 0, 10, 0.92) 0%, transparent 100%) !important;
+}
+
+.hud-label {
+  font-size: 8px !important;
+  letter-spacing: 2.5px !important;
+  opacity: 0.7;
+}
+
+.hud-value {
+  font-size: 11px !important;
+  letter-spacing: 2px !important;
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: LAUNCH SECTION — spacing
+────────────────────────────────────── */
+.launch-layout {
+  padding-top: 20px;
+  gap: 60px !important;
+}
+
+.checklist {
+  padding-top: 4px;
+}
+
+.countdown-wrap {
+  margin-bottom: 32px !important;
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: DEEP SPACE SECTION
+────────────────────────────────────── */
+.space-content {
+  padding-top: clamp(60px, 8vh, 100px);
+  padding-bottom: clamp(40px, 6vh, 80px);
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: MARS ENTRY — dramatic composition
+────────────────────────────────────── */
+.entry-content {
+  padding-top: clamp(70px, 9vh, 110px) !important;
+  padding-bottom: clamp(40px, 6vh, 80px) !important;
+}
+
+.entry-heading {
+  font-size: clamp(30px, 5vw, 64px) !important;
+  text-shadow:
+    0 0 30px rgba(255, 30, 0, 0.4),
+    0 0 60px rgba(255, 30, 0, 0.15) !important;
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: COLONY SECTION
+────────────────────────────────────── */
+.colony-content {
+  padding-top: clamp(60px, 8vh, 100px) !important;
+  padding-bottom: clamp(40px, 6vh, 80px) !important;
+}
+
+.colony-heading {
+  font-size: clamp(28px, 4.6vw, 60px) !important;
+  text-shadow: 0 0 40px rgba(180, 80, 40, 0.3) !important;
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: SIGNAL LOG CARDS (space section)
+────────────────────────────────────── */
+.sig-log {
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease !important;
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: CRISIS CARD REFINEMENT
+────────────────────────────────────── */
+.cc-title {
+  font-size: 8px !important;
+  letter-spacing: 2.5px !important;
+  margin-bottom: 5px !important;
+}
+
+.cc-val {
+  font-size: 12px !important;
+  letter-spacing: 1px !important;
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: SECTION NAV DOTS
+────────────────────────────────────── */
+.section-nav {
+  gap: 10px !important;
+}
+
+.sn-dot {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: SCROLL HINT — refined
+────────────────────────────────────── */
+.scroll-hint {
+  bottom: 32px !important;
+  font-size: 8px !important;
+  letter-spacing: 4px !important;
+  opacity: 0.5;
+}
+
+.sh-line {
+  height: 48px !important;
+  background: linear-gradient(180deg, transparent, rgba(0, 170, 255, 0.4)) !important;
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: SCANNER LINE ON GLITCH TITLE
+   More precise, less distracting
+────────────────────────────────────── */
+.glitch-scan {
+  opacity: 0.6 !important;
+  height: 1px !important;
+  background: rgba(0, 200, 255, 0.35) !important;
+  box-shadow: 0 0 6px rgba(0, 200, 255, 0.5), 0 0 16px rgba(0, 200, 255, 0.2) !important;
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: WARNING TICKER — refined
+────────────────────────────────────── */
+.warning-ticker {
+  font-size: 9px !important;
+  letter-spacing: 2.5px !important;
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: HUD BARS — refined
+────────────────────────────────────── */
+.bar-track {
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  border-radius: 1px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: SCROLL PROGRESS BAR
+────────────────────────────────────── */
+#scroll-progress {
+  height: 1.5px !important;
+  box-shadow: 0 0 8px rgba(0, 170, 255, 0.6), 0 0 20px rgba(0, 170, 255, 0.2) !important;
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: LETTERBOX REFINEMENT
+   Tighter, more cinematic
+────────────────────────────────────── */
+.letterbox {
+  height: 18px !important;
+  background: linear-gradient(180deg, #000 40%, transparent 100%) !important;
+}
+.lb-bot {
+  background: linear-gradient(0deg, #000 40%, transparent 100%) !important;
+}
+#scroll-progress {
+  top: 18px !important;
+}
+
+/* ──────────────────────────────────────
+   AWWWARDS: FINAL MESSAGE — cinematic
+────────────────────────────────────── */
+.fm-quote {
+  font-size: 16px !important;
+  line-height: 2.0 !important;
+  letter-spacing: 0.3px !important;
+  color: rgba(225, 195, 185, 0.92) !important;
+}
+
+.fm-eyebrow {
+  letter-spacing: 5px !important;
+  font-size: 9px !important;
+}
+
+/* ──────────────────────────────────────
+   PREVENT OVERFLOW FLICKER on section transitions
+   (The section-fade-overlay already handles visual cut)
+────────────────────────────────────── */
+#section-fade-overlay {
+  /* Keep composited on its own layer — prevent repaints leaking */
+  will-change: opacity;
+  backface-visibility: hidden;
+}
+
+/* ──────────────────────────────────────
+   MOBILE REFINEMENTS
+────────────────────────────────────── */
+@media (max-width: 768px) {
+  .earth-content {
+    padding-top: clamp(70px, 12vh, 100px) !important;
+  }
+
+  #cursor-dot,
+  #cursor-ring {
+    display: none !important;
+  }
+
+  .glitch {
+    font-size: clamp(22px, 8vw, 44px) !important;
+  }
+
+  #sound-hint {
+    font-size: 9px !important;
+    padding: 8px 14px !important;
+    gap: 10px !important;
+  }
+
+  .briefing-card {
+    font-size: 13.5px !important;
+    padding: 18px 20px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .earth-content {
+    padding-top: 80px !important;
+  }
+
+  .crisis-grid {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .crisis-card {
+    min-width: unset !important;
+    max-width: unset !important;
+  }
+}
+
+/* ──────────────────────────────────────
+   ACCESSIBILITY: REDUCE MOTION
+────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  #film-grain { animation: none !important; }
+  .glitch-scan { animation: none !important; opacity: 0 !important; }
+  .entry-content { animation: none !important; }
+  #section-fade-overlay { transition: none !important; }
+}

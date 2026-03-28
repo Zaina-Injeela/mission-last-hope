@@ -1,0 +1,467 @@
+/* ═══════════════════════════════════════════════════════
+   MISSION: CINEMATIC POLISH LAYER
+   Additive only — no existing rules overridden destructively
+   ═══════════════════════════════════════════════════════ */
+
+/* ──────────────────────────────────────
+   1. FILM-GRAIN OVERLAY
+   Sits above everything, creates a filmic texture.
+────────────────────────────────────── */
+#film-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  animation: grainShift 0.18s steps(1) infinite;
+  opacity: 0.022;
+  mix-blend-mode: overlay;
+  will-change: transform;
+}
+@keyframes grainShift {
+  0%  { transform: translate(0,     0);     }
+  10% { transform: translate(-3px,  2px);   }
+  20% { transform: translate(2px,  -3px);   }
+  30% { transform: translate(3px,   1px);   }
+  40% { transform: translate(-1px,  3px);   }
+  50% { transform: translate(-2px, -1px);   }
+  60% { transform: translate(1px,   3px);   }
+  70% { transform: translate(3px,  -2px);   }
+  80% { transform: translate(-3px,  1px);   }
+  90% { transform: translate(2px,   2px);   }
+}
+
+/* ──────────────────────────────────────
+   2. SECTION TRANSITION WIPES
+   Diagonal gradient dividers between sections.
+────────────────────────────────────── */
+.section-divider {
+  position: absolute;
+  bottom: -1px;
+  left: 0; right: 0;
+  height: 120px;
+  pointer-events: none;
+  z-index: 10;
+}
+.sd-earth {
+  background: linear-gradient(180deg, transparent 0%, rgba(0,0,10,0.95) 100%);
+}
+.sd-launch {
+  background: linear-gradient(180deg, transparent 0%, rgba(0,0,8,0.98) 100%);
+}
+.sd-space {
+  background: linear-gradient(180deg, transparent 0%, rgba(5,0,10,0.95) 100%);
+}
+.sd-entry {
+  background: linear-gradient(180deg, transparent 0%, rgba(8,2,0,0.98) 100%);
+}
+
+/* ──────────────────────────────────────
+   3. ENHANCED GLITCH TITLE
+   Adds a third offset layer + chromatic bleed line
+────────────────────────────────────── */
+.glitch::before {
+  mix-blend-mode: screen;
+}
+.glitch::after {
+  mix-blend-mode: screen;
+}
+/* Horizontal scan-bleed across the title */
+.glitch-scan {
+  position: absolute;
+  left: 0; right: 0;
+  height: 2px;
+  background: rgba(0,200,255,0.4);
+  pointer-events: none;
+  animation: scanTraverse 3.5s linear infinite;
+  box-shadow: 0 0 8px rgba(0,200,255,0.6);
+  will-change: transform, top;
+}
+@keyframes scanTraverse {
+  0%   { top: 0%;   opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* ──────────────────────────────────────
+   4. HUD CORNER BRACKETS
+   Cinematic targeting frame around the viewport.
+────────────────────────────────────── */
+.hud-corner {
+  position: fixed;
+  width: 28px; height: 28px;
+  pointer-events: none;
+  z-index: 101;
+  opacity: 0.35;
+  transition: opacity 0.5s;
+}
+.hud-corner::before,
+.hud-corner::after {
+  content: '';
+  position: absolute;
+  background: var(--blue, #0af);
+  box-shadow: 0 0 6px rgba(0,170,255,0.5);
+}
+/* top-left */
+.hc-tl { top: 14px; left: 14px; }
+.hc-tl::before { width: 100%; height: 1.5px; top: 0; left: 0; }
+.hc-tl::after  { width: 1.5px; height: 100%; top: 0; left: 0; }
+/* top-right */
+.hc-tr { top: 14px; right: 14px; }
+.hc-tr::before { width: 100%; height: 1.5px; top: 0; right: 0; }
+.hc-tr::after  { width: 1.5px; height: 100%; top: 0; right: 0; }
+/* bottom-left */
+.hc-bl { bottom: 14px; left: 14px; }
+.hc-bl::before { width: 100%; height: 1.5px; bottom: 0; left: 0; }
+.hc-bl::after  { width: 1.5px; height: 100%; bottom: 0; left: 0; }
+/* bottom-right */
+.hc-br { bottom: 14px; right: 14px; }
+.hc-br::before { width: 100%; height: 1.5px; bottom: 0; right: 0; }
+.hc-br::after  { width: 1.5px; height: 100%; bottom: 0; right: 0; }
+
+/* ──────────────────────────────────────
+   5. CINEMATIC LETTERBOX BARS
+   Thin black bars top and bottom — widescreen feel.
+────────────────────────────────────── */
+.letterbox {
+  position: fixed;
+  left: 0; right: 0;
+  height: 22px;
+  background: #000;
+  z-index: 9980;
+  pointer-events: none;
+}
+.lb-top { top: 0; }
+.lb-bot { bottom: 0; }
+
+/* ──────────────────────────────────────
+   6. ENHANCED SECTION HEADINGS
+   Adds a thin accent line and number badge.
+────────────────────────────────────── */
+.section-heading {
+  position: relative;
+}
+.section-heading::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blue, #0af), transparent);
+  margin-top: 10px;
+  box-shadow: 0 0 8px rgba(0,170,255,0.4);
+}
+.entry-heading::after {
+  background: linear-gradient(90deg, var(--red, #f23), transparent);
+  box-shadow: 0 0 8px rgba(255,30,50,0.4);
+}
+.colony-heading::after {
+  background: linear-gradient(90deg, var(--green, #0f9), transparent);
+  box-shadow: 0 0 8px rgba(0,255,150,0.3);
+}
+
+/* ──────────────────────────────────────
+   7. GLOW PULSE ON PRIME BUTTON
+────────────────────────────────────── */
+.prime-btn::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  clip-path: polygon(17px 0%, 100% 0%, calc(100% - 17px) 100%, 0% 100%);
+  background: transparent;
+  border: 1px solid rgba(0,170,255,0.2);
+  animation: btnBreath 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes btnBreath {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50%       { opacity: 0.8; transform: scale(1.03); }
+}
+
+/* ──────────────────────────────────────
+   8. TOOLTIP ON SECTION NAV DOTS
+────────────────────────────────────── */
+.sn-dot {
+  position: relative;
+}
+.sn-dot::before {
+  content: attr(title);
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%) translateX(4px);
+  background: rgba(0,3,14,0.9);
+  border: 1px solid var(--glass-b, rgba(0,170,255,0.12));
+  color: rgba(0,170,255,0.8);
+  font-family: var(--font-m, 'Share Tech Mono', monospace);
+  font-size: 8px;
+  letter-spacing: 2px;
+  padding: 4px 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+  border-radius: 2px;
+}
+.sn-dot:hover::before {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* ──────────────────────────────────────
+   9. ENHANCED SIGNAL LOG CARDS
+   Scanline sweep on hover + depth border
+────────────────────────────────────── */
+.sig-log::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0; right: 0;
+  height: 40%;
+  background: linear-gradient(180deg, transparent, rgba(0,170,255,0.05), transparent);
+  animation: logScan 4s linear infinite;
+  pointer-events: none;
+}
+.sig-log:nth-child(2)::after { animation-delay: -1s; }
+.sig-log:nth-child(3)::after { animation-delay: -2s; }
+.sig-log:nth-child(4)::after { animation-delay: -3s; }
+@keyframes logScan {
+  0%   { top: -40%; }
+  100% { top: 100%; }
+}
+
+/* ──────────────────────────────────────
+   10. MARS ENTRY — ATMOSPHERIC CHROMATIC ABERRATION
+────────────────────────────────────── */
+.entry-content {
+  animation: entryAberration 9s ease-in-out infinite alternate;
+}
+@keyframes entryAberration {
+  0%  { filter: none; }
+  92% { filter: none; }
+  96% { filter: drop-shadow(1px 0 0 rgba(255,30,0,0.15)) drop-shadow(-1px 0 0 rgba(0,200,255,0.1)); }
+  100%{ filter: none; }
+}
+
+/* ──────────────────────────────────────
+   11. COLONY BUILD BUTTON — ACTIVE GLOW RING
+────────────────────────────────────── */
+.build-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(0,170,255,0.0);
+  transition: box-shadow 0.4s;
+  pointer-events: none;
+}
+.build-btn:hover::after {
+  box-shadow: inset 0 0 16px rgba(0,170,255,0.06), 0 0 20px rgba(0,170,255,0.06);
+}
+.build-btn.built::after {
+  box-shadow: inset 0 0 20px rgba(0,255,150,0.04), 0 0 14px rgba(0,255,150,0.04);
+}
+
+/* ──────────────────────────────────────
+   12. LAUNCH SECTION — EXHAUST GROUND GLOW
+────────────────────────────────────── */
+.launch-glow-ground {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 120px;
+  background: radial-gradient(ellipse at 50% 100%,
+    rgba(255,120,30,0.0) 0%,
+    rgba(255,80,20,0.0) 100%);
+  pointer-events: none;
+  z-index: 2;
+  transition: background 1s;
+}
+.launch-glow-ground.lit {
+  background: radial-gradient(ellipse at 50% 100%,
+    rgba(255,140,40,0.35) 0%,
+    rgba(255,60,10,0.12) 40%,
+    transparent 70%);
+  animation: groundGlowPulse 0.4s ease-in-out infinite alternate;
+}
+@keyframes groundGlowPulse {
+  from { opacity: 0.7; }
+  to   { opacity: 1.0; }
+}
+
+/* ──────────────────────────────────────
+   13. HUD VALUE NUMBER FLIP ANIMATION
+   Applied when HUD values change.
+────────────────────────────────────── */
+.hud-val-flip {
+  animation: hudFlip 0.35s var(--ease-out, cubic-bezier(0.16,1,0.3,1));
+}
+@keyframes hudFlip {
+  0%  { opacity: 0; transform: translateY(-6px); }
+  100%{ opacity: 1; transform: translateY(0); }
+}
+
+/* ──────────────────────────────────────
+   14. SPACE SECTION — SHIP SILHOUETTE
+   A drifting ship cross-section in the background.
+────────────────────────────────────── */
+#ship-silhouette {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.04;
+  pointer-events: none;
+  width: min(520px, 90vw);
+  will-change: transform;
+  animation: shipDrift 20s ease-in-out infinite alternate;
+}
+@keyframes shipDrift {
+  from { transform: translate(-50%, -52%) rotate(-0.5deg); }
+  to   { transform: translate(-50%, -48%) rotate(0.5deg);  }
+}
+
+/* ──────────────────────────────────────
+   15. ENHANCED CHECKLIST ROW HIGHLIGHTS
+────────────────────────────────────── */
+.cl-item {
+  transition: background 0.3s;
+}
+.cl-item.armed {
+  background: rgba(0,255,150,0.03);
+  border-left: 2px solid rgba(0,255,150,0.2);
+  padding-left: 8px;
+}
+
+/* ──────────────────────────────────────
+   16. COLONY FINAL MESSAGE — STARS BG
+────────────────────────────────────── */
+.final-msg {
+  position: relative;
+}
+.final-msg::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(ellipse 70% 70% at 50% 50%,
+    rgba(255,80,30,0.04) 0%, transparent 70%);
+  pointer-events: none;
+  animation: fmAura 4s ease-in-out infinite alternate;
+}
+@keyframes fmAura {
+  from { opacity: 0.4; transform: scale(0.97); }
+  to   { opacity: 1.0; transform: scale(1.03); }
+}
+
+/* ──────────────────────────────────────
+   17. SCROLL PROGRESS BAR (top edge)
+────────────────────────────────────── */
+#scroll-progress {
+  position: fixed;
+  top: 22px; /* below letterbox */
+  left: 0;
+  width: 0%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--blue, #0af), var(--red, #f23), var(--green, #0f9));
+  z-index: 9970;
+  pointer-events: none;
+  box-shadow: 0 0 6px rgba(0,170,255,0.5);
+  transition: width 0.1s linear;
+}
+
+/* ──────────────────────────────────────
+   18. DEEP SPACE — SHOOTING STAR CANVAS
+────────────────────────────────────── */
+#shooting-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ──────────────────────────────────────
+   19. FLOATING ASTRONAUT SILHOUETTE
+   Earth section — subtle depth element.
+────────────────────────────────────── */
+#astronaut {
+  position: absolute;
+  right: 8%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: astroReveal 1s 1.5s var(--ease-out, cubic-bezier(0.16,1,0.3,1)) forwards,
+             astroFloat 8s 2.5s ease-in-out infinite;
+}
+@keyframes astroReveal {
+  from { opacity: 0; transform: translateY(-40%) scale(0.9); }
+  to   { opacity: 0.18; transform: translateY(-50%) scale(1); }
+}
+@keyframes astroFloat {
+  0%, 100% { transform: translateY(-50%) rotate(-1deg); }
+  50%       { transform: translateY(-54%) rotate(1deg);  }
+}
+
+/* ──────────────────────────────────────
+   20. FOCUS HIGHLIGHT — interactive elements
+   Keyboard accessibility glow
+────────────────────────────────────── */
+button:focus-visible {
+  outline: 1px solid rgba(0,170,255,0.6);
+  outline-offset: 3px;
+  box-shadow: 0 0 12px rgba(0,170,255,0.25);
+}
+
+/* ──────────────────────────────────────
+   21. SECTION ENTRANCE: HORIZONTAL BLEED LINES
+   Each section gets cinematic horizontal rules that
+   reveal on scroll via GSAP (JS side adds .revealed)
+────────────────────────────────────── */
+.bleed-line {
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%, rgba(0,170,255,0.15) 20%,
+    rgba(0,170,255,0.15) 80%, transparent 100%);
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.2s cubic-bezier(0.16,1,0.3,1);
+}
+.bleed-line.revealed { transform: scaleX(1); }
+.bleed-top { top: 56px; }
+.bleed-bot { bottom: 0px; }
+
+/* Red bleed for mars entry */
+#mars-entry .bleed-line {
+  background: linear-gradient(90deg,
+    transparent 0%, rgba(255,40,20,0.12) 20%,
+    rgba(255,40,20,0.12) 80%, transparent 100%);
+}
+/* Green bleed for colony */
+#colony .bleed-line {
+  background: linear-gradient(90deg,
+    transparent 0%, rgba(0,255,120,0.08) 20%,
+    rgba(0,255,120,0.08) 80%, transparent 100%);
+}
+
+/* ──────────────────────────────────────
+   22. RESPONSIVE POLISH
+────────────────────────────────────── */
+@media (max-width: 700px) {
+  .hud-corner { opacity: 0.2; }
+  .letterbox  { height: 14px; }
+  #scroll-progress { top: 14px; }
+  #astronaut  { display: none; }
+  .section-heading::after { width: 32px; }
+}
+@media (max-width: 480px) {
+  .hud-corner { display: none; }
+}
