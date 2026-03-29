@@ -1,0 +1,263 @@
+/* ═══════════════════════════════════════════════════════════════
+   POLISH.CSS  —  Final layer. Loads last.
+   Fixes: mute button · global cursor glow ·
+          darkness · flicker · Awwwards spacing.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. MUTE BUTTON — always visible above all overlays ── */
+#sound-hint {
+  position: fixed !important;
+  bottom: 24px !important;
+  left: 24px !important;
+  transform: none !important;
+  z-index: 9995 !important;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  background: rgba(2, 6, 22, 0.92) !important;
+  border: 1px solid rgba(0, 170, 255, 0.22) !important;
+  backdrop-filter: blur(14px) saturate(1.4);
+  font-family: var(--font-m, 'Share Tech Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 2px;
+  border-radius: 2px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5), 0 0 16px rgba(0,170,255,0.05);
+  pointer-events: all !important;
+}
+#sound-hint .sh-icon {
+  color: rgba(0,185,255,0.9);
+  font-size: 13px;
+}
+#sound-hint .sh-label {
+  color: rgba(130,165,210,0.75);
+  white-space: nowrap;
+}
+#sound-hint .mute-btn-el,
+#mute-btn {
+  background: rgba(0,170,255,0.10) !important;
+  border: 1px solid rgba(0,170,255,0.45) !important;
+  color: rgba(0,185,255,0.92) !important;
+  font-family: var(--font-m, 'Share Tech Mono', monospace) !important;
+  font-size: 10px !important;
+  letter-spacing: 2px !important;
+  padding: 5px 13px !important;
+  border-radius: 2px !important;
+  cursor: none !important;
+  transition: background 0.22s ease, border-color 0.22s ease,
+              color 0.22s ease, box-shadow 0.22s ease, transform 0.14s ease !important;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+#sound-hint .mute-btn-el:hover,
+#mute-btn:hover {
+  background: rgba(0,170,255,0.20) !important;
+  border-color: rgba(0,200,255,0.70) !important;
+  box-shadow: 0 0 10px rgba(0,170,255,0.30) !important;
+  transform: scale(1.04) !important;
+}
+#sound-hint .mute-btn-el:active,
+#mute-btn:active {
+  transform: scale(0.96) !important;
+}
+#sound-hint .mute-btn-el.muted,
+#mute-btn.muted {
+  background: rgba(255,50,50,0.10) !important;
+  border-color: rgba(255,80,80,0.55) !important;
+  color: rgba(255,110,110,0.92) !important;
+}
+#sound-hint .sh-close-btn {
+  background: none !important;
+  border: none !important;
+  color: rgba(80,110,150,0.65) !important;
+  font-size: 13px !important;
+  cursor: none !important;
+  padding: 0 !important;
+  transition: color 0.2s ease !important;
+  flex-shrink: 0;
+}
+#sound-hint .sh-close-btn:hover {
+  color: rgba(140,175,220,0.85) !important;
+}
+
+/* ── 2. GLOBAL CURSOR GLOW — all sections, no JS conflict ── */
+#cursor-dot {
+  width: 7px !important;
+  height: 7px !important;
+  background: rgba(0,190,255,0.95) !important;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0,190,255,0.9),
+              0 0 20px rgba(0,190,255,0.45),
+              0 0 40px rgba(0,190,255,0.15) !important;
+  transition: width 0.18s ease, height 0.18s ease,
+              background 0.18s ease, box-shadow 0.22s ease !important;
+  mix-blend-mode: screen;
+  z-index: 10000 !important;
+}
+#cursor-ring {
+  width: 30px !important;
+  height: 30px !important;
+  border: 1.5px solid rgba(0,190,255,0.50) !important;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0,190,255,0.10);
+  transition: width 0.30s cubic-bezier(0.16,1,0.3,1),
+              height 0.30s cubic-bezier(0.16,1,0.3,1),
+              border-color 0.24s ease,
+              box-shadow 0.28s ease !important;
+  mix-blend-mode: screen;
+  z-index: 9999 !important;
+}
+body.cursor-hover #cursor-dot {
+  width: 9px !important;
+  height: 9px !important;
+  background: rgba(255,210,40,0.95) !important;
+  box-shadow: 0 0 10px rgba(255,210,40,0.9),
+              0 0 24px rgba(255,210,40,0.45),
+              0 0 48px rgba(255,210,40,0.15) !important;
+}
+body.cursor-hover #cursor-ring {
+  width: 48px !important;
+  height: 48px !important;
+  border-color: rgba(255,210,40,0.55) !important;
+  box-shadow: 0 0 14px rgba(255,210,40,0.22) !important;
+}
+body.cursor-click #cursor-dot {
+  width: 12px !important;
+  height: 12px !important;
+  background: rgba(0,255,195,0.95) !important;
+  box-shadow: 0 0 14px rgba(0,255,195,0.9),
+              0 0 30px rgba(0,255,195,0.4) !important;
+}
+body.cursor-click #cursor-ring {
+  width: 38px !important;
+  height: 38px !important;
+  border-color: rgba(0,255,195,0.65) !important;
+}
+
+/* ── 3. REDUCE DARKNESS ── */
+body { background: #03061a !important; }
+
+.vignette {
+  background: radial-gradient(
+    ellipse 85% 85% at 50% 50%,
+    transparent 48%,
+    rgba(0,0,0,0.38) 100%
+  ) !important;
+}
+.scanlines {
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 3px,
+    rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px
+  ) !important;
+}
+.hud-top {
+  background: linear-gradient(
+    180deg, rgba(0,5,20,0.88) 0%, transparent 100%
+  ) !important;
+}
+.letterbox { height: 14px !important; }
+.lb-top {
+  background: linear-gradient(180deg,#000 0%,rgba(0,0,0,0.4) 70%,transparent 100%) !important;
+}
+.lb-bot {
+  background: linear-gradient(0deg,#000 0%,rgba(0,0,0,0.4) 70%,transparent 100%) !important;
+}
+.briefing-card { background: rgba(2,10,32,0.58) !important; }
+.crisis-card   { background: rgba(4,8,24,0.52)  !important; }
+.build-panel   { background: rgba(2,6,20,0.65)  !important; }
+.cs            { background: rgba(24,5,0,0.60)  !important; }
+.sig-log       { background: rgba(2,6,18,0.72)  !important; }
+
+/* ── 4. ANTI-FLICKER ── */
+#film-grain {
+  opacity: 0.014 !important;
+  animation-duration: 0.32s !important;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.heat-layer {
+  animation-duration: 2.4s !important;
+  animation-timing-function: ease-in-out !important;
+  animation-direction: alternate !important;
+  opacity: 0.55 !important;
+}
+.atmo-glow    { animation-duration: 8s !important; }
+.blink-item   { animation-duration: 2.2s !important; }
+.red-val      { animation: pulse-opacity 2.5s ease-in-out infinite alternate !important; }
+.pt-bar       { animation-duration: 1.5s !important; }
+
+#section-fade-overlay {
+  will-change: opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+body { filter: none; will-change: auto; }
+.rv-ring-1,.rv-ring-2 { will-change: transform; backface-visibility: hidden; }
+.fl      { animation-duration: 0.22s !important; }
+
+/* ── 5. AWWWARDS SPACING & TYPOGRAPHY ── */
+.earth-content {
+  padding-top: clamp(80px,11vh,118px) !important;
+  padding-bottom: clamp(50px,7vh,90px) !important;
+}
+.glitch {
+  font-size: clamp(26px,5.0vw,68px) !important;
+  letter-spacing: clamp(2px,0.5vw,7px) !important;
+  text-shadow: 0 0 50px rgba(0,160,255,0.30),
+               0 0 100px rgba(0,160,255,0.10) !important;
+}
+.glitch-wrap     { margin-bottom: 30px !important; }
+.typewriter-line { margin-bottom: 44px !important; opacity: 0.88; }
+.section-heading {
+  font-size: clamp(28px,4.5vw,62px) !important;
+  line-height: 1.02 !important;
+  margin-bottom: 28px !important;
+}
+.phase-tag { font-size: 9px !important; letter-spacing: 5px !important; }
+.prime-btn { padding: 16px 44px !important; font-size: 11px !important; letter-spacing: 4px !important; }
+.entry-content  { padding-top: clamp(72px,10vh,112px) !important; }
+.colony-content { padding-top: clamp(64px,9vh,104px) !important; }
+.scroll-hint    { opacity: 0.42; }
+#scroll-progress {
+  top: 14px !important;
+  height: 1.5px !important;
+  box-shadow: 0 0 8px rgba(0,170,255,0.55),
+              0 0 20px rgba(0,170,255,0.18) !important;
+}
+.hud-label { opacity: 0.75; }
+
+/* ── 6. MOBILE ── */
+@media (hover: none) and (pointer: coarse) {
+  #cursor-dot, #cursor-ring { display: none !important; }
+  body { cursor: auto !important; }
+  #sound-hint {
+    bottom: 16px !important;
+    left: 16px !important;
+    transform: none !important;
+    font-size: 9px !important;
+    padding: 8px 14px !important;
+    gap: 10px !important;
+  }
+}
+@media (max-width: 480px) {
+  .earth-content { padding-top: 88px !important; }
+}
+
+/* ── 7. REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  #film-grain    { animation: none !important; opacity: 0 !important; }
+  .glitch-scan   { animation: none !important; opacity: 0 !important; }
+  .entry-content { animation: none !important; }
+  .heat-layer    { animation: none !important; }
+  .atmo-glow     { animation: none !important; }
+  .blink-item    { animation: none !important; opacity: 1 !important; }
+  .red-val       { animation: none !important; }
+  #section-fade-overlay { transition: none !important; }
+  .pt-bar { animation-duration: 0.4s !important; }
+}
+
+
+@keyframes soundHintReveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
